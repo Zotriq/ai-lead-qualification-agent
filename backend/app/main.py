@@ -93,50 +93,32 @@ def _register_routers(app: FastAPI) -> None:
 
     Routers are imported inside this function so that the module graph
     does not create circular dependencies during testing.
+    Each router already defines its own prefix (e.g. /api/leads), so
+    we do NOT add an extra prefix here to avoid double-prefixed URLs.
     """
     try:
-        from app.routers import leads  # noqa: PLC0415
-        app.include_router(leads.router, prefix="/api/v1/leads", tags=["Leads"])
+        from app.routes import leads  # noqa: PLC0415
+        app.include_router(leads.router, tags=["Leads"])
     except ImportError:
         logger.warning("Router 'leads' not found – skipping.")
 
     try:
-        from app.routers import emails  # noqa: PLC0415
-        app.include_router(emails.router, prefix="/api/v1/emails", tags=["Emails"])
+        from app.routes import email_approval  # noqa: PLC0415
+        app.include_router(email_approval.router, tags=["Emails"])
     except ImportError:
-        logger.warning("Router 'emails' not found – skipping.")
+        logger.warning("Router 'email_approval' not found – skipping.")
 
     try:
-        from app.routers import dashboard  # noqa: PLC0415
-        app.include_router(dashboard.router, prefix="/api/v1/dashboard", tags=["Dashboard"])
+        from app.routes import dashboard  # noqa: PLC0415
+        app.include_router(dashboard.router, tags=["Dashboard"])
     except ImportError:
         logger.warning("Router 'dashboard' not found – skipping.")
 
     try:
-        from app.routers import webhooks  # noqa: PLC0415
-        app.include_router(webhooks.router, prefix="/api/v1/webhooks", tags=["Webhooks"])
+        from app.routes import webhooks  # noqa: PLC0415
+        app.include_router(webhooks.router, tags=["Webhooks"])
     except ImportError:
         logger.warning("Router 'webhooks' not found – skipping.")
-
-    try:
-        from app.routers import integrations  # noqa: PLC0415
-        app.include_router(
-            integrations.router,
-            prefix="/api/v1/integrations",
-            tags=["Integrations"],
-        )
-    except ImportError:
-        logger.warning("Router 'integrations' not found – skipping.")
-
-    try:
-        from app.routers import settings as settings_router  # noqa: PLC0415
-        app.include_router(
-            settings_router.router,
-            prefix="/api/v1/settings",
-            tags=["Settings"],
-        )
-    except ImportError:
-        logger.warning("Router 'settings' not found – skipping.")
 
 
 # ---------------------------------------------------------------------------

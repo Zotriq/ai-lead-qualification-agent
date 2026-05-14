@@ -3,7 +3,7 @@
 import React from "react";
 import clsx from "clsx";
 import { format } from "date-fns";
-import type { Lead, LeadActivity, IntegrationSync, AIAnalysis, QualificationStatus } from "@/lib/types";
+import type { Lead, LeadActivity, IntegrationSync, AIAnalysis } from "@/lib/types";
 import { StatusBadge, ScoreBadge } from "./LeadTable";
 
 // ─── AI Analysis Section ──────────────────────────────────────────────────────
@@ -270,7 +270,7 @@ interface LeadDetailProps {
 }
 
 function InfoRow({ label, value }: { label: string; value: React.ReactNode }) {
-  if (!value) return null;
+  if (value === null || value === undefined) return null;
   return (
     <div className="flex items-start gap-2 py-1.5">
       <span className="text-xs font-medium text-slate-500 w-28 flex-shrink-0 pt-0.5">{label}</span>

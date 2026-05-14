@@ -5,7 +5,6 @@ from datetime import datetime, timezone
 from typing import Optional
 
 from sqlalchemy import Boolean, ForeignKey, String, Text, func
-from sqlalchemy.dialects.postgresql import UUID as PG_UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database import Base

@@ -87,30 +87,46 @@ export default function LeadDetailPage() {
 
   const handleApprove = async (approvedBy: string) => {
     if (!leadId) return;
-    const updated = await approveEmail(leadId, approvedBy);
-    setEmail(updated);
-    showToast("Email approved!");
+    try {
+      const updated = await approveEmail(leadId, approvedBy);
+      setEmail(updated);
+      showToast("Email approved!");
+    } catch (err) {
+      showToast(err instanceof Error ? err.message : "Failed to approve email", "error");
+    }
   };
 
   const handleReject = async () => {
     if (!leadId) return;
-    const updated = await rejectEmail(leadId);
-    setEmail(updated);
-    showToast("Email rejected.");
+    try {
+      const updated = await rejectEmail(leadId);
+      setEmail(updated);
+      showToast("Email rejected.");
+    } catch (err) {
+      showToast(err instanceof Error ? err.message : "Failed to reject email", "error");
+    }
   };
 
   const handleSend = async () => {
     if (!leadId) return;
-    const updated = await sendEmail(leadId);
-    setEmail(updated);
-    showToast("Email sent!");
+    try {
+      const updated = await sendEmail(leadId);
+      setEmail(updated);
+      showToast("Email sent!");
+    } catch (err) {
+      showToast(err instanceof Error ? err.message : "Failed to send email", "error");
+    }
   };
 
   const handleSaveEmail = async (subject: string, body: string) => {
     if (!leadId) return;
-    const updated = await updateFollowUp(leadId, { subject, body });
-    setEmail(updated);
-    showToast("Email draft saved.");
+    try {
+      const updated = await updateFollowUp(leadId, { subject, body });
+      setEmail(updated);
+      showToast("Email draft saved.");
+    } catch (err) {
+      showToast(err instanceof Error ? err.message : "Failed to save email", "error");
+    }
   };
 
   // ── Loading state ──────────────────────────────────────────────────────────

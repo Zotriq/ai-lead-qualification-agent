@@ -81,7 +81,9 @@ class N8NService:
         ai_analysis: dict[str, Any],
     ) -> dict[str, Any]:
         payload = self._build_payload(lead_data, score, status, ai_analysis)
-        webhook_url: str = self._settings.N8N_WEBHOOK_URL  # type: ignore[assignment]
+        if not self._settings.N8N_WEBHOOK_URL:
+            return self._skip("N8N_WEBHOOK_URL is not set.")
+        webhook_url: str = self._settings.N8N_WEBHOOK_URL
 
         try:
             async with httpx.AsyncClient(timeout=15.0) as client:

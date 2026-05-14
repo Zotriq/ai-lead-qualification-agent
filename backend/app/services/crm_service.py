@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import logging
 from typing import Any
+from urllib.parse import quote
 
 import httpx
 
@@ -96,7 +97,7 @@ class CRMService:
         self, client: httpx.AsyncClient, email: str
     ) -> str | None:
         """Return the HubSpot contact ID if a contact with *email* exists."""
-        url = f"{_HUBSPOT_API_BASE}/crm/v3/objects/contacts/{email}"
+        url = f"{_HUBSPOT_API_BASE}/crm/v3/objects/contacts/{quote(email, safe='')}"
         params = {"idProperty": "email", "properties": "email"}
         try:
             response = await client.get(

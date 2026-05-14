@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useCallback, useRef } from "react";
+import React, { Suspense, useEffect, useState, useCallback, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { fetchLeads } from "@/lib/api";
 import type { Lead, QualificationStatus } from "@/lib/types";
@@ -85,11 +85,11 @@ function Pagination({ page, pages, total, pageSize, onChange }: PaginationProps)
   );
 }
 
-// ─── Leads Page ───────────────────────────────────────────────────────────────
+// ─── Leads Page Inner (uses useSearchParams) ─────────────────────────────────
 
 const PAGE_SIZE = 20;
 
-export default function LeadsPage() {
+function LeadsPageInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -140,10 +140,10 @@ export default function LeadsPage() {
     []
   );
 
-  // Trigger on page change
+  // Trigger on page or filter change
   useEffect(() => {
     loadLeads(page, filters);
-  }, [page]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [page, filters, loadLeads]);
 
   // Debounce filter changes
   const handleFiltersChange = (newFilters: FilterState) => {
@@ -151,7 +151,6 @@ export default function LeadsPage() {
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
       setPage(1);
-      loadLeads(1, newFilters);
     }, 300);
   };
 
@@ -221,5 +220,21 @@ export default function LeadsPage() {
         />
       )}
     </div>
+  );
+}
+
+// ─── Exported Page (with Suspense boundary) ──────────────────────────────────
+
+export default function LeadsPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center h-64">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600" />
+        </div>
+      }
+    >
+      <LeadsPageInner />
+    </Suspense>
   );
 }

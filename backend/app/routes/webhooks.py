@@ -19,7 +19,6 @@ function used by ``POST /api/leads/intake``).
 
 from __future__ import annotations
 
-import hashlib
 import hmac
 import logging
 import uuid
@@ -76,12 +75,9 @@ def _verify_webhook_secret(provided_secret: str | None) -> None:
         )
 
     # Constant-time comparison to prevent timing attacks
-    expected = configured_secret.encode("utf-8")
-    supplied = provided_secret.encode("utf-8")
-
     if not hmac.compare_digest(
-        hashlib.sha256(expected).hexdigest(),
-        hashlib.sha256(supplied).hexdigest(),
+        configured_secret.encode("utf-8"),
+        provided_secret.encode("utf-8"),
     ):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

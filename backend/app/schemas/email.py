@@ -20,6 +20,7 @@ class FollowUpEmailResponse(BaseModel):
     approved_at: Any = None  # datetime, serialized as ISO string
     sent_at: Any = None  # datetime, serialized as ISO string
     created_at: Any  # datetime, serialized as ISO string
+    updated_at: Any = None  # datetime, serialized as ISO string
 
     model_config = {"from_attributes": True}
 
@@ -29,7 +30,7 @@ class FollowUpEmailResponse(BaseModel):
             return str(value)
         return str(value) if value is not None else None
 
-    @field_serializer("approved_at", "sent_at", "created_at")
+    @field_serializer("approved_at", "sent_at", "created_at", "updated_at")
     def serialize_datetime(self, value: Any) -> Optional[str]:
         if isinstance(value, datetime):
             return value.isoformat()

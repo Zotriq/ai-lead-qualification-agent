@@ -260,7 +260,7 @@ async def _run_qualification(lead_id: uuid.UUID) -> None:
             final_score: int = rule_score
             final_status: str = rule_status
             recommended_action: str = "Review lead manually."
-            email_subject: str = f"Following up on your inquiry"
+            email_subject: str = "Following up on your inquiry"
             email_body: str = (
                 f"Hi {lead.name or 'there'},\n\n"
                 "Thank you for reaching out. We will be in touch shortly.\n\n"
@@ -741,9 +741,8 @@ async def update_lead(
         "message": "message",
         "project_type": "project_type",
         "country": "country",
-        "qualification_score": "score",
+        "score": "score",
         "qualification_status": "qualification_status",
-        "ai_analysis": "ai_analysis_json",
     }
 
     for schema_key, model_attr in field_map.items():

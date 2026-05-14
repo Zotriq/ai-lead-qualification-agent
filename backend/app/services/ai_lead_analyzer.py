@@ -82,7 +82,9 @@ class AILeadAnalyzer:
             logger.warning(
                 "OPENAI_API_KEY is not set — AI analysis will use fallback mode."
             )
-        self._client = AsyncOpenAI(api_key=resolved_key)
+            self._client = None
+        else:
+            self._client = AsyncOpenAI(api_key=resolved_key)
         self._model = model
         self._temperature = temperature
         self._max_tokens = max_tokens
@@ -153,12 +155,15 @@ class AILeadAnalyzer:
         rule_score: int,
     ) -> str:
         """Send the analysis request to OpenAI and return the raw text."""
+        if self._client is None:
+            raise RuntimeError("OpenAI client is not configured (no API key).")
+
         user_prompt = self._build_user_prompt(lead_data, rule_score)
 
         response = await self._client.chat.completions.create(
             model=self._model,
             temperature=self._temperature,
-            max_tokens=self._max_tokens,
+            max_completion_tokens=self._max_tokens,
             response_format={"type": "json_object"},
             messages=[
                 {"role": "system", "content": _SYSTEM_PROMPT},

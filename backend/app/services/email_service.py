@@ -123,10 +123,10 @@ class EmailService:
             "password": settings.SMTP_PASSWORD or None,
         }
 
-        # Port 465 → implicit TLS; anything else → STARTTLS
+        # Port 465 → implicit TLS; port 587 → STARTTLS; other ports → plain
         if settings.SMTP_PORT == 465:
             smtp_kwargs["use_tls"] = True
-        else:
+        elif settings.SMTP_PORT == 587:
             smtp_kwargs["start_tls"] = True
 
         try:

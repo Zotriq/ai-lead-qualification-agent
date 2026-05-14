@@ -218,7 +218,10 @@ class SlackService:
         self, payload: dict[str, Any], *, context: str
     ) -> bool:
         """POST *payload* to the configured Slack webhook URL."""
-        webhook_url: str = self._settings.SLACK_WEBHOOK_URL  # type: ignore[assignment]
+        if not self._settings.SLACK_WEBHOOK_URL:
+            logger.warning("SlackService: SLACK_WEBHOOK_URL is not set.")
+            return False
+        webhook_url: str = self._settings.SLACK_WEBHOOK_URL
 
         try:
             async with httpx.AsyncClient(timeout=10.0) as client:

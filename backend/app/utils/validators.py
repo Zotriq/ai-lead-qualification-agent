@@ -48,10 +48,7 @@ _DISPOSABLE_DOMAINS: frozenset[str] = frozenset(
         "spamgourmet.com",
         "trashmail.at",
         "trashmail.io",
-        "sharklasers.com",
         "guerrillamail.info",
-        "grr.la",
-        "spam4.me",
         "10minutemail.com",
         "10minutemail.net",
         "10minutemail.org",
@@ -60,11 +57,9 @@ _DISPOSABLE_DOMAINS: frozenset[str] = frozenset(
         "mintemail.com",
         "getnada.com",
         "tempr.email",
-        "discard.email",
         "cfl.fr",
         "mailnull.com",
         "spamfree24.org",
-        "mailnull.com",
     }
 )
 

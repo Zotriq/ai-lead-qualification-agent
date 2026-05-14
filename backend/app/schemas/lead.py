@@ -39,25 +39,24 @@ class LeadResponse(BaseModel):
     industry: Optional[str] = None
     job_title: Optional[str] = None
     budget: Optional[str] = None
-    budget_min: Optional[float] = None
-    budget_max: Optional[float] = None
+    normalized_budget_min: Optional[float] = None
+    normalized_budget_max: Optional[float] = None
     timeline: Optional[str] = None
-    timeline_normalized: Optional[str] = None
     source: Optional[str] = None
     message: Optional[str] = None
     project_type: Optional[str] = None
     country: Optional[str] = None
-    qualification_score: Optional[float] = None
+    score: Optional[int] = None
     qualification_status: Optional[str] = None
-    ai_analysis: Optional[str] = None
-    is_spam: Optional[bool] = None
+    ai_analysis_json: Optional[Any] = None
+    recommended_next_action: Optional[str] = None
     created_at: Any  # datetime, serialized as ISO string
     updated_at: Any  # datetime, serialized as ISO string
 
     model_config = {"from_attributes": True}
 
     @field_serializer("id")
-    def serialize_id(self, value: Any) -> str:
+    def serialize_id(self, value: Any) -> Optional[str]:
         if isinstance(value, UUID):
             return str(value)
         return str(value) if value is not None else None
@@ -94,10 +93,8 @@ class LeadUpdateRequest(BaseModel):
     message: Optional[str] = None
     project_type: Optional[str] = None
     country: Optional[str] = None
-    qualification_score: Optional[float] = None
+    score: Optional[int] = None
     qualification_status: Optional[str] = None
-    ai_analysis: Optional[str] = None
-    is_spam: Optional[bool] = None
 
     model_config = {"str_strip_whitespace": True}
 
@@ -112,6 +109,6 @@ class LeadUpdateRequest(BaseModel):
 class LeadQualificationResponse(BaseModel):
     """Schema for returning AI qualification results."""
 
-    score: float
+    score: int
     qualification_status: str  # e.g. "hot", "warm", "cold", "unqualified"
-    ai_analysis: str
+    ai_analysis: Optional[Any] = None

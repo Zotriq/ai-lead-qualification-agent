@@ -59,16 +59,16 @@ async def get_dashboard_summary(
         func.count(Lead.id).label("total_leads"),
         # Per-status counts using conditional aggregation
         func.count(
-            case((Lead.qualification_status == "hot", Lead.id), else_=None)
+            case((Lead.qualification_status == "hot", Lead.id))
         ).label("hot_leads"),
         func.count(
-            case((Lead.qualification_status == "warm", Lead.id), else_=None)
+            case((Lead.qualification_status == "warm", Lead.id))
         ).label("warm_leads"),
         func.count(
-            case((Lead.qualification_status == "cold", Lead.id), else_=None)
+            case((Lead.qualification_status == "cold", Lead.id))
         ).label("cold_leads"),
         func.count(
-            case((Lead.qualification_status == "unqualified", Lead.id), else_=None)
+            case((Lead.qualification_status == "unqualified", Lead.id))
         ).label("unqualified_leads"),
         # Average score (COALESCE to 0 when no rows have a score)
         func.coalesce(func.avg(Lead.score), 0).label("average_score"),

@@ -101,7 +101,7 @@ class GoogleSheetsService:
 
         # google-api-python-client is synchronous; run it in a thread pool
         # so we do not block the async event loop.
-        loop = asyncio.get_event_loop()
+        loop = asyncio.get_running_loop()
         result = await loop.run_in_executor(None, self._append_row_sync, lead_data)
         return result
 
